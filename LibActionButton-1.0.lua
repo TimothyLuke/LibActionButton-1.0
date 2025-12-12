@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0"
-local MINOR_VERSION = 134
+local MINOR_VERSION = 135
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -1979,19 +1979,23 @@ function UpdateCount(self)
 		self.Count:SetText("")
 		return
 	end
-	if self:IsConsumableOrStackable() then
-		local count = self:GetCount()
-		if count > (self.maxDisplayCount or 9999) then
-			self.Count:SetText("*")
-		else
-			self.Count:SetText(count)
-		end
+	if C_ActionBar and C_ActionBar.GetActionDisplayCount and self._state_type == "action" then
+		self.Count:SetText(C_ActionBar.GetActionDisplayCount(self._state_action, self.maxDisplayCount or 9999))
 	else
-		local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
-		if charges and maxCharges and maxCharges > 1 then
-			self.Count:SetText(charges)
+		if self:IsConsumableOrStackable() then
+			local count = self:GetCount()
+			if count > (self.maxDisplayCount or 9999) then
+				self.Count:SetText("*")
+			else
+				self.Count:SetText(count)
+			end
 		else
-			self.Count:SetText("")
+			local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
+			if charges and maxCharges and maxCharges > 1 then
+				self.Count:SetText(charges)
+			else
+				self.Count:SetText("")
+			end
 		end
 	end
 end
@@ -2612,6 +2616,13 @@ end
 --- Action Button
 
 -- fallback for pre-12.0
+
+local GetActionCount = GetActionCount
+
+-- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
+if Midnight then
+	GetActionCount = function() return 0 end
+end
 
 local GetActionChargeInfoFallback
 if GetActionCharges then
