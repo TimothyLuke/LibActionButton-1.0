@@ -101,6 +101,7 @@ read_globals = {
 	"ActionButton_ApplyCooldown",
 	"ActionButton_HideOverlayGlow",
 	"ActionButton_UpdateFlyout",
+	"ActionButtonSpellAlertManager",
 	"AssistedCombatManager",
 	"ClearActionButtonCooldowns",
 	"CooldownFrame_Clear",
