@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0"
-local MINOR_VERSION = 138
+local MINOR_VERSION = 139
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -2188,7 +2188,7 @@ function UpdateHotkeys(self)
 end
 
 function ShowOverlayGlow(self)
-	if ActionButtonSpellAlertManager then
+	if WoWRetail and ActionButtonSpellAlertManager then
 		ActionButtonSpellAlertManager:ShowAlert(self)
 	elseif LBG then
 		LBG.ShowOverlayGlow(self)
@@ -2196,7 +2196,7 @@ function ShowOverlayGlow(self)
 end
 
 function HideOverlayGlow(self)
-	if ActionButtonSpellAlertManager then
+	if WoWRetail and ActionButtonSpellAlertManager then
 		ActionButtonSpellAlertManager:HideAlert(self)
 	elseif LBG then
 		LBG.HideOverlayGlow(self)
