@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0"
-local MINOR_VERSION = 141
+local MINOR_VERSION = 142
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -2095,8 +2095,16 @@ function UpdateCooldown(self)
 		lossOfControlInfo.modRate = cooldownInfo.modRate
 	end
 
-	if not self.config.lossOfControlCooldown then
+	if not self.config.lossOfControlCooldown or not lossOfControlInfo or not lossOfControlInfo.startTime or not lossOfControlInfo.duration then
 		lossOfControlInfo = defaultLossOfControlInfo
+	end
+
+	if not cooldownInfo or not cooldownInfo.startTime or not cooldownInfo.duration then
+		cooldownInfo = defaultCooldownInfo
+	end
+
+	if not chargeInfo or not chargeInfo.maxCharges or not chargeInfo.currentCharges or not chargeInfo.cooldownStartTime or not chargeInfo.cooldownDuration then
+		chargeInfo = defaultChargeInfo
 	end
 
 	self.cooldown:SetDrawBling(self.cooldown:GetEffectiveAlpha() > 0.5)
