@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0"
-local MINOR_VERSION = 142
+local MINOR_VERSION = 143
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -2791,6 +2791,10 @@ Spell.IsConsumableOrStackable  = function(self) return IsConsumableSpell(self._s
 Spell.IsUnitInRange            = function(self, unit) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsSpellInRange(slot, BOOKTYPE_SPELL, unit) or nil end
 Spell.SetTooltip               = function(self) return GameTooltip:SetSpellByID(self._state_action) end
 Spell.GetSpellId               = function(self) return self._state_action end
+
+if C_Spell and C_Spell.GetSpellDisplayCount then
+	Spell.GetDisplayCount      = function(self) return C_Spell.GetSpellDisplayCount(self._state_action) end
+end
 
 if C_UnitAuras then
 	Spell.GetPassiveCooldownSpellID = function(self)
